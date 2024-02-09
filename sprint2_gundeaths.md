@@ -1,5 +1,5 @@
 # Gun_Deaths
-2024-02-07
+2024-02-09
 
 ``` r
 library(tidyverse)
@@ -49,17 +49,17 @@ colnames(Gundeaths2)[which(colnames(Gundeaths2) == "race")] <- "Race"
 Suicide <- Gundeaths2 %>% 
   filter(intent == "Suicide") %>% 
   group_by(Race) %>% 
-  summarise(Total = n())
+  summarise(Fraction = n() / nrow(Gundeaths2))
 ```
 
 ## First Chart Showing the Various Suicides by race:
 
 ``` r
 ggplot(data = Suicide, 
-       mapping = aes(y = Total, x = Race, fill = Race)) +
+       mapping = aes(y = Fraction, x = Race, fill = Race)) +
   
   geom_col() +
-     labs(x= "Race", y = "Suicides", title = "Suicides by Race")+
+     labs(x= "Race", y = "Suicides (percent)", title = "Suicides by Race")+
 
   labs(title = "Suicides by Race") +
   theme(plot.title = element_text(hjust=.75),
@@ -100,8 +100,6 @@ ggplot(data = Gundeaths2,
   geom_bar(position = "dodge", color = "black") +
   labs(x = "Education", y = "Count", title = "Gun deaths based on Education") +
   theme_bw()+
-
-
 
   labs(title = "Gun deaths based on Education") +
   theme(plot.title = element_text(hjust=.75),
