@@ -1,23 +1,35 @@
----
-title: "Idaho_Map"
-date: "`r format(Sys.time(), '%B %d, %Y')`"
-format:  
-  gfm:
-    code_fold: true
-    code_tools: true
----
+# Idaho_Map
+2024-03-23
 
-
-```{r}
-
+``` r
 #Load Libraries
 
 #Library for mapping
 library(sf)
+```
 
+    Warning: package 'sf' was built under R version 4.3.3
+
+    Linking to GEOS 3.11.2, GDAL 3.8.2, PROJ 9.3.1; sf_use_s2() is TRUE
+
+``` r
 #Library for typical functions
 library(tidyverse)
+```
 
+    ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ✔ dplyr     1.1.4     ✔ readr     2.1.5
+    ✔ forcats   1.0.0     ✔ stringr   1.5.1
+    ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+    ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+    ✔ purrr     1.0.2     
+
+    ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ✖ dplyr::filter() masks stats::filter()
+    ✖ dplyr::lag()    masks stats::lag()
+    ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+``` r
 # Wells zip
 pacman::p_load(downloader, sf, fs, tidyverse)
 wells_path <- "https://byuistats.github.io/M335/data/Wells.zip"
@@ -58,12 +70,9 @@ download(state_shape_path, df, mode = "wb")
 unzip(df, exdir = uf)
 state_shape <- read_sf(uf)
 file_delete(df); dir_delete(uf)
-
 ```
 
-
-```{r}
-
+``` r
 #Filter the wells column to clean up the data.
 
 wells2 <- wells |> 
@@ -84,11 +93,9 @@ water2 <- water |>
 
 state_shape2 <- state_shape |> 
   filter(StateName == "Idaho")
-
 ```
 
-```{r}
-
+``` r
 # Display Map
 
 ggplot(data = state_shape2) +
@@ -98,9 +105,12 @@ ggplot(data = state_shape2) +
   geom_sf(data = water2, aes(color = "rivers"), lwd = 3)+
   coord_sf(crs = st_crs(4267))+
   scale_color_manual(values = c("firebrick", "skyblue", "green"))
-  
-#Save the image and adjust size when user opens it.
-ggsave("Idaho_Water.png", width = 15, height = 10)
-
 ```
 
+![](Idaho_Water_files/figure-commonmark/unnamed-chunk-3-1.png)
+
+``` r
+#Save the image and adjust size when user opens it.
+
+ggsave("Idaho_Water.png", width = 15, height = 10)
+```
